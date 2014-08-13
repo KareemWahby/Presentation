@@ -1,0 +1,72 @@
+CREATE DATABASE Clubs
+
+CREATE TABLE Users (
+	id INT IDENTITY PRIMARY KEY,
+	user_name VARCHAR(20) UNIQUE,
+	passKey VARCHAR(30)
+)
+
+CREATE TABLE Clubs (
+	id INT IDENTITY PRIMARY KEY,
+	name VARCHAR(100),
+	address VARCHAR(200),
+	telephone_number VARCHAR(11),
+	fax VARCHAR(11)
+)
+
+CREATE TABLE ClubReps (
+	id INT IDENTITY PRIMARY KEY,
+	name VARCHAR(20),
+	email VARCHAR(50)
+	clubID INT,
+	FOREIGN KEY (clubID) REFERENCES Clubs
+)
+
+CREATE TABLE ClubReps_Phone_Numbers (
+	repId INT,
+	phone_number VARCHAR(16),
+	PRIMARY KEY (repId,phone_number),
+	FOREIGN KEY (repId) REFERENCES ClubReps
+)
+
+CREATE TABLE Contracts (
+	id INT IDENTITY PRIMARY KEY,
+	clubID INT UNIQUE,
+	dateOfSigning Date,
+	duration VARCHAR(50),
+
+ 	FOREIGN KEY (clubID) REFERENCES Clubs 
+)
+
+
+CREATE TABLE ClubObligations (
+	contractID INT,
+	obligation VARCHAR(200),
+	PRIMARY KEY (contractID,obligation),
+	FOREIGN KEY (contractID) REFERENCES Contracts
+)
+
+CREATE TABLE General_Conditions (
+	contractID INT,
+	condition VARCHAR(200),
+	PRIMARY KEY (contractID,condition),
+	FOREIGN KEY (contractID) REFERENCES Contracts
+)
+
+
+CREATE TABLE Penalties (
+	contractID INT
+	penalty VARCHAR(200),
+	fine INT,
+	PRIMARY KEY (contractID,penalty,fine),
+	FOREIGN KEY (contractID) REFERENCES Contracts
+)
+
+
+
+
+
+
+
+
+
