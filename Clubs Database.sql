@@ -2,11 +2,11 @@ CREATE DATABASE Clubs
 
 CREATE TABLE Users (
 	id INT IDENTITY PRIMARY KEY,
-	user_name VARCHAR(20) UNIQUE NOT NULL,
+	userName VARCHAR(20) UNIQUE NOT NULL,
 	passKey VARCHAR(30)
 )
 
-CREATE TABLE Clubs (
+CREATE TABLE Club (
 	id INT IDENTITY PRIMARY KEY,
 	name VARCHAR(100) NOT NULL,
 	address VARCHAR(200),
@@ -17,9 +17,9 @@ CREATE TABLE Clubs (
 CREATE TABLE ClubReps (
 	id INT IDENTITY PRIMARY KEY,
 	name VARCHAR(20) NOT NULL,
-	email VARCHAR(50)
+	email VARCHAR(50),
 	clubID INT,
-	FOREIGN KEY (clubID) REFERENCES Clubs
+	FOREIGN KEY (clubID) REFERENCES Club
 )
 
 CREATE TABLE ClubReps_Phone_Numbers (
@@ -35,7 +35,7 @@ CREATE TABLE Contracts (
 	dateOfSigning Date,
 	duration VARCHAR(50),
 	softCopyLink VARCHAR(100),
- 	FOREIGN KEY (clubID) REFERENCES Clubs 
+ 	FOREIGN KEY (clubID) REFERENCES Club
 )
 
 
@@ -55,7 +55,7 @@ CREATE TABLE General_Conditions (
 
 
 CREATE TABLE Penalties (
-	contractID INT
+	contractID INT,
 	penalty VARCHAR(200),
 	fine INT,
 	PRIMARY KEY (contractID,penalty,fine),
@@ -76,10 +76,3 @@ CREATE TABLE Marketing_Rights (
 	friendlyMatches_trainingCmps VARCHAR(5000),
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
-
-
-
-
-
-
-
