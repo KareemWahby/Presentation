@@ -34,7 +34,7 @@ CREATE TABLE Contracts (
 	clubID INT UNIQUE,
 	dateOfSigning Date,
 	duration VARCHAR(50),
-
+	softCopyLink VARCHAR(100),
  	FOREIGN KEY (clubID) REFERENCES Clubs 
 )
 
@@ -62,7 +62,20 @@ CREATE TABLE Penalties (
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
 
-
+CREATE TABLE Marketing_Rights (
+	contractID INT PRIMARY KEY ,
+	titles VARCHAR(5000),
+	logos VARCHAR(5000),
+	bannersAroundField VARCHAR(5000),
+	firstTeam VARCHAR(5000),
+	addsInClub VARCHAR(5000),
+	events VARCHAR(5000),
+	tickets VARCHAR(5000),
+	printedMaterial VARCHAR(5000),
+	website VARCHAR(5000),
+	friendlyMatches_trainingCmps VARCHAR(5000),
+	FOREIGN KEY (contractID) REFERENCES Contracts
+)
 
 
 
