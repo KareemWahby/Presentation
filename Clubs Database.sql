@@ -95,3 +95,104 @@ CREATE TABLE Services_By_Company (
 )
 
 
+CREATE TABLE Season1_Incentives (
+	contractID INT PRIMARY KEY,
+	firstPlace INT,
+	secondPlace INT,
+	thirdPlace INT,
+	fourthPlace INT,
+	fifthPlace INT,
+	sixthPlace INT,
+	seventhPlace INT,
+	eighthPlace INT,
+	ninthPlace INT,
+	tenthPlace INT,
+	eleventhPlace INT,
+	twelvethPlace INT,
+	thirteenthPlace INT,
+	fourteenthPlace INT,
+	fifteenthPlace INT,
+	sixteenthPlace INT,
+	seventeenthPlace INT,
+	eighteenthPlace INT,
+	nineteenthPlace INT,
+	twentiethPlace INT,
+	FOREIGN KEY (contractID) REFERENCES Contracts
+) 
+
+
+CREATE TABLE Season2_Incentives (
+	contractID INT PRIMARY KEY,
+	firstPlace INT,
+	secondPlace INT,
+	thirdPlace INT,
+	fourthPlace INT,
+	fifthPlace INT,
+	sixthPlace INT,
+	seventhPlace INT,
+	eighthPlace INT,
+	ninthPlace INT,
+	tenthPlace INT,
+	eleventhPlace INT,
+	twelvethPlace INT,
+	thirteenthPlace INT,
+	fourteenthPlace INT,
+	fifteenthPlace INT,
+	sixteenthPlace INT,
+	seventeenthPlace INT,
+	eighteenthPlace INT,
+	nineteenthPlace INT,
+	twentiethPlace INT,
+	FOREIGN KEY (contractID) REFERENCES Contracts
+) 
+
+CREATE TABLE Season3_Incentives (
+	contractID INT PRIMARY KEY,
+	firstPlace INT,
+	secondPlace INT,
+	thirdPlace INT,
+	fourthPlace INT,
+	fifthPlace INT,
+	sixthPlace INT,
+	seventhPlace INT,
+	eighthPlace INT,
+	ninthPlace INT,
+	tenthPlace INT,
+	eleventhPlace INT,
+	twelvethPlace INT,
+	thirteenthPlace INT,
+	fourteenthPlace INT,
+	fifteenthPlace INT,
+	sixteenthPlace INT,
+	seventeenthPlace INT,
+	eighteenthPlace INT,
+	nineteenthPlace INT,
+	twentiethPlace INT,
+	FOREIGN KEY (contractID) REFERENCES Contracts
+) 
+
+
+CREATE TABLE Season4_Incentives (
+	contractID INT PRIMARY KEY,
+	firstPlace INT,
+	secondPlace INT,
+	thirdPlace INT,
+	fourthPlace INT,
+	fifthPlace INT,
+	sixthPlace INT,
+	seventhPlace INT,
+	eighthPlace INT,
+	ninthPlace INT,
+	tenthPlace INT,
+	eleventhPlace INT,
+	twelvethPlace INT,
+	thirteenthPlace INT,
+	fourteenthPlace INT,
+	fifteenthPlace INT,
+	sixteenthPlace INT,
+	seventeenthPlace INT,
+	eighteenthPlace INT,
+	nineteenthPlace INT,
+	twentiethPlace INT,
+	FOREIGN KEY (contractID) REFERENCES Contracts
+) 
