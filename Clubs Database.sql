@@ -86,8 +86,7 @@ CREATE TABLE Services_By_Company (
 	accomodation BIT,
 	transportation BIT,
 	mineralWater BIT,
-	pre_Season_training_Camp BIT,
-	training_camp_type BIT, -- 1 for abroad , 0 for local
+	pre_Season_training_Camp BIT,-- 1 for abroad , 0 for local , null of not
 	fiveK_perPoint BIT,
 	fiftyK_perSeason BIT,
 	incentive_table BIT,
@@ -196,3 +195,89 @@ CREATE TABLE Season4_Incentives (
 	twentiethPlace INT,
 	FOREIGN KEY (contractID) REFERENCES Contracts
 ) 
+
+
+CREATE TABLE Season1_Payment (
+	contractID INT PRIMARY KEY,
+	total INT,
+	tvRights INT,
+	marketingRights INT,
+	firstInstallment INT,
+	firstInstallmentDate DATE,
+	firstInstallmentPaid BIT,
+	secondInstallment INT,
+	secondInstallmentDate DATE,
+	secondInstallmentPaid BIT,
+	thirdInstallment INT,
+	thirdInstallmentDate DATE,
+	thirdInstallmentPaid BIT,
+	fourthInstallment INT,
+	fourthInstallmentDate DATE,
+	fourthInstallmentPaid BIT,
+	FOREIGN KEY (contractID) REFERENCES Contracts
+)
+
+
+CREATE TABLE Season2_Payment (
+	contractID INT PRIMARY KEY,
+	total INT,
+	tvRights INT,
+	marketingRights INT,
+	firstInstallment INT,
+	firstInstallmentDate DATE,
+	firstInstallmentPaid BIT,
+	secondInstallment INT,
+	secondInstallmentDate DATE,
+	secondInstallmentPaid BIT,
+	thirdInstallment INT,
+	thirdInstallmentDate DATE,
+	thirdInstallmentPaid BIT,
+	fourthInstallment INT,
+	fourthInstallmentDate DATE,
+	fourthInstallmentPaid BIT,
+	FOREIGN KEY (contractID) REFERENCES Contracts
+)
+
+
+CREATE TABLE Season3_Payment (
+	contractID INT PRIMARY KEY,
+	total INT,
+	tvRights INT,
+	marketingRights INT,
+	firstInstallment INT,
+	firstInstallmentDate DATE,
+	firstInstallmentPaid BIT,
+	secondInstallment INT,
+	secondInstallmentDate DATE,
+	secondInstallmentPaid BIT,
+	thirdInstallment INT,
+	thirdInstallmentDate DATE,
+	thirdInstallmentPaid BIT,
+	fourthInstallment INT,
+	fourthInstallmentDate DATE,
+	fourthInstallmentPaid BIT,
+	FOREIGN KEY (contractID) REFERENCES Contracts
+)
+
+
+CREATE TABLE Season4_Payment (
+	contractID INT PRIMARY KEY,
+	total INT,
+	tvRights INT,
+	marketingRights INT,
+	firstInstallment INT,
+	firstInstallmentDate DATE,
+	firstInstallmentPaid BIT,
+	secondInstallment INT,
+	secondInstallmentDate DATE,
+	secondInstallmentPaid BIT,
+	thirdInstallment INT,
+	thirdInstallmentDate DATE,
+	thirdInstallmentPaid BIT,
+	fourthInstallment INT,
+	fourthInstallmentDate DATE,
+	fourthInstallmentPaid BIT,
+	FOREIGN KEY (contractID) REFERENCES Contracts
+)
+
+
