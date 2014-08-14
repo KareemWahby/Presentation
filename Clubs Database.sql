@@ -62,6 +62,7 @@ CREATE TABLE Penalties (
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
 
+
 CREATE TABLE Marketing_Rights (
 	contractID INT PRIMARY KEY ,
 	titles VARCHAR(5000),
@@ -76,3 +77,21 @@ CREATE TABLE Marketing_Rights (
 	friendlyMatches_trainingCmps VARCHAR(5000),
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
+
+
+CREATE TABLE Services_By_Company (
+	contractID INT PRIMARY KEY,
+	football_Kits BIT ,
+	football_Kits_startDate Date,
+	accomodation BIT,
+	transportation BIT,
+	mineralWater BIT,
+	pre_Season_training_Camp BIT,
+	training_camp_type BIT, -- 1 for abroad , 0 for local
+	fiveK_perPoint BIT,
+	fiftyK_perSeason BIT,
+	incentive_table BIT,
+	FOREIGN KEY (contractID) REFERENCES Contracts
+)
+
+
