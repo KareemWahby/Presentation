@@ -1,4 +1,7 @@
+USE master
+DROP DATABASE Clubs
 CREATE DATABASE Clubs
+USE Clubs
 
 CREATE TABLE Users (
 	id INT IDENTITY PRIMARY KEY,
@@ -54,11 +57,21 @@ CREATE TABLE General_Conditions (
 )
 
 
-CREATE TABLE Penalties (
+CREATE TABLE Penalties_Reference (
 	contractID INT,
 	penalty VARCHAR(200),
-	fine INT,
-	PRIMARY KEY (contractID,penalty,fine),
+	ammount INT,
+	PRIMARY KEY (contractID,penalty,ammount),
+	FOREIGN KEY (contractID) REFERENCES Contracts
+)
+
+
+CREATE TABLE Penalties_ammounts_on_contract (
+	contractID INT,
+	penalty VARCHAR(200),
+	ammount INT,
+	dateofPenalty Date,
+	PRIMARY KEY (contractID,penalty,dateofPenalty),
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
 
@@ -287,4 +300,12 @@ CREATE TABLE Other_Payment (
 	ammount Int,
 	PRIMARY KEY (contractID,description,ammount),
 	FOREIGN KEY (contractID) REFERENCES Contracts
+)
+
+
+CREATE TABLE Money_Susspended_for_Settelment(
+	contractID INT,
+	susspendedAmmount INT,
+	DateOfSuspention DATE,
+	FOREIGN KEY (contractID) REFERENCES Contracts 	
 )
