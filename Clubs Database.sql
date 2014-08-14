@@ -281,3 +281,10 @@ CREATE TABLE Season4_Payment (
 )
 
 
+CREATE TABLE Other_Payment (
+	contractID Int ,
+	description VARCHAR(100),
+	ammount Int,
+	PRIMARY KEY (contractID,description,ammount),
+	FOREIGN KEY (contractID) REFERENCES Contracts
+)
