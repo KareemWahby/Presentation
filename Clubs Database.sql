@@ -72,7 +72,7 @@ CREATE TABLE Penalties_ammounts_on_contract (
 	ammount INT,
 	dateofPenalty Date,
 	PRIMARY KEY (contractID,penalty,dateofPenalty),
-	FOREIGN KEY (contractID) REFERENCES Contracts
+	FOREIGN KEY (contractID) REFERENCES 
 )
 
 
