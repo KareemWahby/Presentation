@@ -17,19 +17,20 @@ CREATE TABLE Club (
 	fax VARCHAR(11)
 )
 
-CREATE TABLE ClubReps (
+CREATE TABLE ClubBoard (
 	id INT IDENTITY PRIMARY KEY,
 	name VARCHAR(20) NOT NULL,
+	position VARCHAR(20),
 	email VARCHAR(50),
-	clubID INT,
+	clubID INT UNIQUE,
 	FOREIGN KEY (clubID) REFERENCES Club
 )
 
-CREATE TABLE ClubReps_Phone_Numbers (
-	repId INT,
+CREATE TABLE ClubBoardMember_Phone_Numbers (
+	clubBoardMemId INT,
 	phone_number VARCHAR(16),
-	PRIMARY KEY (repId,phone_number),
-	FOREIGN KEY (repId) REFERENCES ClubReps
+	PRIMARY KEY (clubBoardMemId,phone_number),
+	FOREIGN KEY (clubBoardMemId) REFERENCES ClubBoard
 )
 
 CREATE TABLE Contracts (
@@ -72,7 +73,7 @@ CREATE TABLE Penalties_ammounts_on_contract (
 	ammount INT,
 	dateofPenalty Date,
 	PRIMARY KEY (contractID,penalty,dateofPenalty),
-	FOREIGN KEY (contractID) REFERENCES 
+	FOREIGN KEY (contractID) REFERENCES Contracts
 )
 
 
@@ -212,21 +213,21 @@ CREATE TABLE Season4_Incentives (
 
 CREATE TABLE Season1_Payment (
 	contractID INT PRIMARY KEY,
-	total INT,
+	total INT ,
 	tvRights INT,
 	marketingRights INT,
 	firstInstallment INT,
 	firstInstallmentDate DATE,
-	firstInstallmentPaid BIT,
+	firstInstallmentPaid BIT DEFAULT 0,
 	secondInstallment INT,
 	secondInstallmentDate DATE,
-	secondInstallmentPaid BIT,
+	secondInstallmentPaid BIT DEFAULT 0,
 	thirdInstallment INT,
 	thirdInstallmentDate DATE,
-	thirdInstallmentPaid BIT,
+	thirdInstallmentPaid BIT DEFAULT 0,
 	fourthInstallment INT,
 	fourthInstallmentDate DATE,
-	fourthInstallmentPaid BIT,
+	fourthInstallmentPaid BIT DEFAULT 0,
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
 
@@ -238,16 +239,16 @@ CREATE TABLE Season2_Payment (
 	marketingRights INT,
 	firstInstallment INT,
 	firstInstallmentDate DATE,
-	firstInstallmentPaid BIT,
+	firstInstallmentPaid BIT DEFAULT 0,
 	secondInstallment INT,
 	secondInstallmentDate DATE,
-	secondInstallmentPaid BIT,
+	secondInstallmentPaid BIT DEFAULT 0,
 	thirdInstallment INT,
 	thirdInstallmentDate DATE,
-	thirdInstallmentPaid BIT,
+	thirdInstallmentPaid BIT DEFAULT 0,
 	fourthInstallment INT,
 	fourthInstallmentDate DATE,
-	fourthInstallmentPaid BIT,
+	fourthInstallmentPaid BIT DEFAULT 0,
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
 
@@ -259,16 +260,16 @@ CREATE TABLE Season3_Payment (
 	marketingRights INT,
 	firstInstallment INT,
 	firstInstallmentDate DATE,
-	firstInstallmentPaid BIT,
+	firstInstallmentPaid BIT DEFAULT 0,
 	secondInstallment INT,
 	secondInstallmentDate DATE,
-	secondInstallmentPaid BIT,
+	secondInstallmentPaid BIT DEFAULT 0,
 	thirdInstallment INT,
 	thirdInstallmentDate DATE,
-	thirdInstallmentPaid BIT,
+	thirdInstallmentPaid BIT DEFAULT 0,
 	fourthInstallment INT,
 	fourthInstallmentDate DATE,
-	fourthInstallmentPaid BIT,
+	fourthInstallmentPaid BIT DEFAULT 0,
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
 
@@ -280,16 +281,16 @@ CREATE TABLE Season4_Payment (
 	marketingRights INT,
 	firstInstallment INT,
 	firstInstallmentDate DATE,
-	firstInstallmentPaid BIT,
+	firstInstallmentPaid BIT DEFAULT 0,
 	secondInstallment INT,
 	secondInstallmentDate DATE,
-	secondInstallmentPaid BIT,
+	secondInstallmentPaid BIT DEFAULT 0,
 	thirdInstallment INT,
 	thirdInstallmentDate DATE,
-	thirdInstallmentPaid BIT,
+	thirdInstallmentPaid BIT DEFAULT 0,
 	fourthInstallment INT,
 	fourthInstallmentDate DATE,
-	fourthInstallmentPaid BIT,
+	fourthInstallmentPaid BIT DEFAULT 0,
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
 
