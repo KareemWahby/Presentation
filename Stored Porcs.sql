@@ -399,6 +399,225 @@ where M.contractID = contractID
 
 
 */
+/*--------------------------------------------Editing and deleting Procs--------------------------------------------*/
+
+go
+Create proc EditPaymentStatus
+@contractID int,
+@season int,
+@installment int,
+@paid bit,
+@stat bit out
+as
+begin
+	set @stat=1
+	declare @idStat int
+	if @season=1
+	begin
+		select @idStat=count(*) from Season1_payment where contractID=@contractID
+		if @idStat=1
+		begin
+			if @installment =1
+			begin
+				update Season1_payment
+				set firstInstallmentPaid = @paid
+				where contractID=@contractID
+			end
+			else
+			begin
+				if @installment =2
+				begin
+					update Season1_payment
+					set secondInstallmentPaid = @paid
+					where contractID=@contractID
+				end
+				else
+				begin
+					if @installment =3 
+					begin
+						update Season1_payment
+						set thirdInstallmentPaid = @paid
+						where contractID=@contractID
+					end
+					else
+					begin
+						if @installment =4
+						begin
+							update Season1_payment
+							set fourthInstallmentPaid = @paid
+							where contractID=@contractID
+						end
+						else
+						begin
+							set @stat=0
+						end
+					end
+				end
+			end
+		end
+		else
+		begin
+			set @stat=0
+		end 
+	end
+	else
+	begin
+		if @season=2
+		begin
+			select @idStat=count(*) from Season1_payment where contractID=@contractID
+			if @idStat=1
+			begin
+				if @installment =1
+				begin
+					update Season2_payment
+					set firstInstallmentPaid = @paid
+					where contractID=@contractID
+				end
+				else
+				begin
+					if @installment =2
+					begin
+						update Season2_payment
+						set secondInstallmentPaid = @paid
+						where contractID=@contractID
+					end
+					else
+					begin
+						if @installment =3 
+						begin
+							update Season2_payment
+							set thirdInstallmentPaid =@paid
+							where contractID=@contractID
+						end
+						else
+						begin
+							if @installment =4
+							begin
+								update Season2_payment
+								set fourthInstallmentPaid =@paid
+								where contractID=@contractID
+							end
+							else
+							begin
+								set @stat=0
+							end
+						end
+					end
+				end		
+			end
+			else
+			begin
+				set @stat=0
+			end
+		end
+		else
+		begin
+			if @season=3
+			begin
+				select @idStat=count(*) from Season1_payment where contractID=@contractID
+				if @idStat=1
+				begin
+					if @installment =1
+					begin
+						update Season3_payment
+						set firstInstallmentPaid =@paid
+						where contractID=@contractID
+					end
+					else
+					begin
+						if @installment =2
+						begin
+							update Season3_payment
+							set secondInstallmentPaid =@paid
+							where contractID=@contractID
+						end
+						else
+						begin
+							if @installment =3 
+							begin
+								update Season3_payment
+								set thirdInstallmentPaid =@paid
+								where contractID=@contractID
+							end
+							else
+							begin
+								if @installment =4
+								begin
+									update Season3_payment
+									set fourthInstallmentPaid =@paid
+									where contractID=@contractID
+								end
+								else
+								begin
+									set @stat=0
+								end
+							end
+						end
+					end		
+	 			end
+				else
+				begin
+					set @stat=0
+				end
+			end
+			else
+			begin
+				if @season=4
+				begin
+					select @idStat=count(*) from Season1_payment where contractID=@contractID
+					if @idStat=1
+					begin
+						if @installment =1
+						begin
+							update Season4_payment
+							set firstInstallmentPaid =@paid
+							where contractID=@contractID
+						end
+						else
+						begin
+							if @installment =2
+							begin
+								update Season4_payment
+								set secondInstallmentPaid = @paid
+								where contractID=@contractID
+							end
+							else
+							begin
+								if @installment =3 
+								begin
+									update Season4_payment
+									set thirdInstallmentPaid = @paid
+									where contractID=@contractID
+								end
+								else
+								begin
+									if @installment =4
+									begin
+										update Season4_payment
+										set fourthInstallmentPaid =@paid
+										where contractID=@contractID
+									end
+									else
+									begin
+										set @stat=0
+									end
+								end
+							end
+						end		
+					end
+					else
+					begin
+						set @stat=0
+					end
+				end
+				else
+				begin
+					set @stat=0
+				end
+			end
+		end
+	end
+end
 /* -----------------------------------------Calculation Procs----------------------------------------- */
 
 go
@@ -879,4 +1098,97 @@ begin
 	exec CalTotalPaidSeason3 @t3 out
 	exec CalTotalPaidSeason4 @t4 out
 	set @tot=@t1+@t2+@t3+@t4
+end
+
+
+go 
+create proc CalOterPaymentsOnContract
+@contractID int,
+@payment int out
+as
+begin
+	select @payment=isnull(sum(ammount),0) from Other_Payment where contractID=@contractID
+end
+
+
+GO
+alter proc CalIncentives
+@contractID int,
+@season int,
+@points int,
+@place int,
+@incentives int out
+as
+begin
+	declare @fivek bit
+	declare @fiftyk bit
+	declare @incentivetbl bit
+	declare @o int
+	set @o=0
+	select @fivek=s.fiveK_perPoint,@fiftyk=s.fiftyK_perSeason,@incentivetbl=s.incentive_table from Services_By_Company s where contractID=@contractID
+	if @fivek=1
+	begin
+		set @o= @o+(5000*@points)
+	end
+	if @fiftyk=1
+	begin
+		set @o= @o+50000
+	end
+	if @incentivetbl=1
+	begin
+		create table temp(val int)
+		declare @t varchar(max)
+		set @t= case @place 
+					when 1  then 'firstPlace'
+	 				when 2  then 'secondPlace'
+					when 3  then 'thirdPlace'
+					when 4  then 'fourthPlace'
+					when 5  then 'fifthPlace'
+					when 6  then 'sixthPlace'
+					when 7  then 'seventhPlace'
+					when 8  then 'eighthPlace'
+					when 9  then 'ninthPlace'
+					when 10 then 'tenthPlace'
+					when 11 then 'eleventhPlace'
+					when 12 then 'twelvethPlace'
+					when 13 then 'thirteenthPlace'
+					when 14 then 'fourteenthPlace'
+					when 15 then 'fifteenthPlace'
+					when 16 then 'sixteenthPlace'
+					when 17 then 'seventeenthPlace'
+					when 18 then 'eighteenthPlace'
+					when 19 then 'nineteenthPlace'
+					when 20 then 'twentiethPlace'
+				end
+		declare @t3 nvarchar(max)
+		if @season=1
+		begin
+		    set @t3 = concat('insert into temp select '+@t+' from Season1_Incentives where contractID= ',@contractID)
+		end
+		else
+		begin
+			if @season=2
+			begin
+				set @t3 = concat('insert into temp select '+@t+' from Season2_Incentives where contractID= ',@contractID)
+			end
+			else
+			begin
+				if @season=3
+				begin
+					set @t3 = concat('insert into temp select '+@t+' from Season3_Incentives where contractID= ',@contractID)
+				end
+				else
+				begin
+					if @season=4
+					begin
+						set @t3 = concat('insert into temp select '+@t+' from Season4_Incentives where contractID= ',@contractID)
+					end
+				end
+			end
+		end
+		exec(@t3)
+		set @o=@o+(select top 1 val from temp)
+		drop table temp
+	end
+	set @incentives=@o
 end
