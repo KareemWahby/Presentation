@@ -1,0 +1,30 @@
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\Clubs Database.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\Clubs Database.pdb
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\Antlr3.Runtime.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\AspNet.ScriptManager.jQuery.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\AspNet.ScriptManager.jQuery.UI.Combined.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.AspNet.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.Core.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.OAuth.Consumer.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.OAuth.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.OpenId.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\EntityFramework.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\Microsoft.AspNet.Membership.OpenAuth.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\Microsoft.AspNet.Web.Optimization.WebForms.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\Microsoft.ScriptManager.MSAjax.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\Microsoft.ScriptManager.WebForms.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\System.Web.Optimization.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\System.Web.Providers.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\WebGrease.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\EntityFramework.xml
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.Core.xml
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.OAuth.xml
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.OAuth.Consumer.xml
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.OpenId.xml
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\bin\DotNetOpenAuth.AspNet.xml
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\obj\Debug\Clubs Database.csprojResolveAssemblyReference.cache
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\obj\Debug\Clubs Database.dll
+C:\Users\karee_000\Desktop\Presentation Work\Clubs Database\Clubs Database\obj\Debug\Clubs Database.pdb

@@ -5,30 +5,31 @@ USE Clubs
 
 CREATE TABLE Users (
 	id INT IDENTITY PRIMARY KEY,
-	userName VARCHAR(20) UNIQUE NOT NULL,
-	passKey VARCHAR(30)
+	userName NVARCHAR(20) UNIQUE NOT NULL,
+	passKey NVARCHAR(30)
 )
 
 CREATE TABLE Club (
 	id INT IDENTITY PRIMARY KEY,
-	name VARCHAR(100) NOT NULL,
-	address VARCHAR(200),
-	telephone_number VARCHAR(11),
-	fax VARCHAR(11)
+	name NVARCHAR(100) NOT NULL,
+	address NVARCHAR(200),
+	telephone_number NVARCHAR(11),
+	fax NVARCHAR(11),
+	website NVARCHAR(max)
 )
 
 CREATE TABLE ClubBoard (
 	id INT IDENTITY PRIMARY KEY,
-	name VARCHAR(20) NOT NULL,
-	position VARCHAR(20),
-	email VARCHAR(50),
+	name NVARCHAR(20) NOT NULL,
+	position NVARCHAR(20),
+	email NVARCHAR(50),
 	clubID INT UNIQUE,
 	FOREIGN KEY (clubID) REFERENCES Club
 )
 
 CREATE TABLE ClubBoardMember_Phone_Numbers (
 	clubBoardMemId INT,
-	phone_number VARCHAR(16),
+	phone_number NVARCHAR(16),
 	PRIMARY KEY (clubBoardMemId,phone_number),
 	FOREIGN KEY (clubBoardMemId) REFERENCES ClubBoard
 )
@@ -37,22 +38,22 @@ CREATE TABLE Contracts (
 	id INT IDENTITY PRIMARY KEY,
 	clubID INT UNIQUE,
 	dateOfSigning Date,
-	duration VARCHAR(50),
-	softCopyLink VARCHAR(100),
+	duration NVARCHAR(50),
+	softCopyLink NVARCHAR(100),
  	FOREIGN KEY (clubID) REFERENCES Club
 )
 
 
 CREATE TABLE ClubObligations (
 	contractID INT,
-	obligation VARCHAR(200),
+	obligation NVARCHAR(200),
 	PRIMARY KEY (contractID,obligation),
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
 
 CREATE TABLE General_Conditions (
 	contractID INT,
-	condition VARCHAR(200),
+	condition NVARCHAR(200),
 	PRIMARY KEY (contractID,condition),
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
@@ -60,7 +61,7 @@ CREATE TABLE General_Conditions (
 
 CREATE TABLE Penalties_Reference (
 	contractID INT,
-	penalty VARCHAR(200),
+	penalty NVARCHAR(200),
 	ammount INT,
 	PRIMARY KEY (contractID,penalty,ammount),
 	FOREIGN KEY (contractID) REFERENCES Contracts
@@ -69,7 +70,7 @@ CREATE TABLE Penalties_Reference (
 
 CREATE TABLE Penalties_ammounts_on_contract (
 	contractID INT,
-	penalty VARCHAR(200),
+	penalty NVARCHAR(200),
 	ammount INT,
 	dateofPenalty Date,
 	PRIMARY KEY (contractID,penalty,dateofPenalty),
@@ -79,16 +80,16 @@ CREATE TABLE Penalties_ammounts_on_contract (
 
 CREATE TABLE Marketing_Rights (
 	contractID INT PRIMARY KEY ,
-	titles VARCHAR(5000),
-	logos VARCHAR(5000),
-	bannersAroundField VARCHAR(5000),
-	firstTeam VARCHAR(5000),
-	addsInClub VARCHAR(5000),
-	events VARCHAR(5000),
-	tickets VARCHAR(5000),
-	printedMaterial VARCHAR(5000),
-	website VARCHAR(5000),
-	friendlyMatches_trainingCmps VARCHAR(5000),
+	titles NVARCHAR(max),
+	logos NVARCHAR(max),
+	bannersAroundField NVARCHAR(max),
+	firstTeam NVARCHAR(max),
+	addsInClub NVARCHAR(max),
+	events NVARCHAR(max),
+	tickets NVARCHAR(max),
+	printedMaterial NVARCHAR(max),
+	website NVARCHAR(max),
+	friendlyMatches_trainingCmps NVARCHAR(max),
 	FOREIGN KEY (contractID) REFERENCES Contracts
 )
 
@@ -297,7 +298,7 @@ CREATE TABLE Season4_Payment (
 
 CREATE TABLE Other_Payment (
 	contractID Int ,
-	description VARCHAR(100),
+	description NVARCHAR(100),
 	ammount Int,
 	PRIMARY KEY (contractID,description,ammount),
 	FOREIGN KEY (contractID) REFERENCES Contracts

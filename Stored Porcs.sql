@@ -1,7 +1,7 @@
 go
 Create proc SignIn 
-@username varchar(20),
-@password varchar(30),
+@username nvarchar(20),
+@password nvarchar(30),
 @success int output
 as 
 select @success= Count(*)
@@ -13,17 +13,18 @@ where U.username=@username and U.passKEY=@password
 
 go
 Create proc AddNewClubAndContractRec
-@name varchar(100),
-@address varchar(200),
-@telnum varchar(11),
-@faxnum varchar(11),
+@name nvarchar(100),
+@address nvarchar(200),
+@telnum nvarchar(11),
+@faxnum nvarchar(11),
 @dateofSign Date,
-@duration varchar(50),
-@softCopy varchar(100)
+@duration nvarchar(50),
+@softCopy nvarchar(100),
+@website nvarchar(100)
 as
 begin
 	insert into Club
-	values (@name,@address,@telnum,@faxnum)
+	values (@name,@address,@telnum,@faxnum,@website)
 	declare @ClubID int= SCOPE_IDENTITY()
 	insert into Contracts
 	values(@ClubID,@dateofSign,@duration,@softCopy)
@@ -33,7 +34,7 @@ end
 go
 create proc AddNewClubObligation
 @contractID int,
-@obligation varchar(200)
+@obligation nvarchar(200)
 as
 begin
 	insert into ClubObligations
@@ -44,7 +45,7 @@ end
 go
 create proc AddNewGeneralCondition
 @contractID int,
-@condition varchar(200)
+@condition nvarchar(200)
 as
 begin
 	insert into General_Conditions
@@ -67,7 +68,7 @@ end
 go
 create proc AddNewOtherPayment
 @contractID int,
-@description varchar(100),
+@description nvarchar(100),
 @ammount int
 as
 begin
@@ -79,7 +80,7 @@ end
 go
 create proc AddNewPenaltyAmmount
 @contractID int,
-@penalty varchar(200),
+@penalty nvarchar(200),
 @ammount int,
 @dateofPenalty Date
 as
@@ -92,7 +93,7 @@ end
 go
 create proc AddNewPenaltyRef
 @contractID int,
-@penalty varchar(200),
+@penalty nvarchar(200),
 @ammount int
 as
 begin
@@ -224,7 +225,7 @@ end
 go
 create proc AddNewBoardMemPhone
 @boardMemId int,
-@phoneNumber varchar(16)
+@phoneNumber nvarchar(16)
 as
 begin
 	insert into ClubBoardMember_Phone_Numbers
@@ -234,11 +235,11 @@ end
 
 go
 create proc AddNewBoardMem
-@name varchar(20),
-@position varchar(20),
-@email varchar(50),
+@name nvarchar(20),
+@position nvarchar(20),
+@email nvarchar(50),
 @ClubID int,
-@phoneNumber varchar(16)
+@phoneNumber nvarchar(16)
 as
 begin
 	insert into ClubBoard
@@ -252,16 +253,16 @@ end
 go
 create proc AddMarketing_Rights
 @contractID INT,
-@titles VARCHAR(5000),
-@logos VARCHAR(5000),
-@bannersAroundField VARCHAR(5000),
-@firstTeam VARCHAR(5000),
-@addsInClub VARCHAR(5000),
-@events VARCHAR(5000),
-@tickets VARCHAR(5000),
-@printedMaterial VARCHAR(5000),
-@website VARCHAR(5000),
-@friendlyMatches_trainingCmps VARCHAR(5000)
+@titles nVARCHAR(max),
+@logos nVARCHAR(max),
+@bannersAroundField nVARCHAR(max),
+@firstTeam nVARCHAR(max),
+@addsInClub nVARCHAR(max),
+@events nVARCHAR(max),
+@tickets nVARCHAR(max),
+@printedMaterial nVARCHAR(max),
+@website nVARCHAR(max),
+@friendlyMatches_trainingCmps nVARCHAR(max)
 as
 begin
 	insert into Marketing_Rights
@@ -369,40 +370,357 @@ begin
 end
 
 
-/* -----------------------------------------Get records Procs----------------------------------------- *
+/* -----------------------------------------Get and Search records Procs----------------------------------------- */
+go
+Create proc Get_ClubID
+@name nvarchar(max),
+@id int out
+as
+select @id=id from Club where name=@name
+
 
 go
-Create proc Get_Club_By_Name
+Create proc Get_ContractID
+@clubID int,
+@id int out
+as
+select @id=id from Contracts where clubID=@clubID
+
+
+go
+Create proc Get_Club_By_ID
+@id int
+as
+select * from Club where id=@id
+
+
+go
+create proc Search_Club_By_Name
+@name nvarchar(100)
+as
+begin
+	declare @sql nvarchar(max)
+	set @sql= 'select id,name from Club where name like ''%'+@name+'%'''
+	exec(@sql)
+end
 
 
 go
 Create proc Get_Club_Board
+@ClubID int
+as
+select id,name,position,email from ClubBoard where ClubID=@ClubID
 
 
 go
 Create proc Get_BoardMem_Phones
-
+@id int
+as
+select phone_number from ClubBoardMember_Phone_Numbers where clubBoardMemId=@id
 
 go
 Create proc Get_Obligations
+@contractID int
+as
+select obligation from ClubObligations where contractID=@contractID
+
+
+go
+Create proc Get_Conditions
+@contractID int
+as
+select condition from General_Conditions where contractID=@contractID
 
 
 go
 Create proc Get_Contract
+@contractID int
+as
+select c.dateofSigning,c.duration,c.softCopyLink from Contracts c where c.id=@contractID 
+
+
+go
+create proc Get_Services
+@contractID int
+as
+select s.football_Kits,s.football_Kits_startDate,s.accomodation,s.transportation,s.mineralWater,s.pre_Season_training_Camp,s.fiveK_perPoint,s.fiftyK_perSeason,s.incentive_table from Services_By_Company s where s.contractID=@contractID
+
+
 go
 Create proc Get_Marketing_Rights
 @contractID Int 
 as 
-select *
-from  Marketing_Rights M
-where M.contractID = contractID
+begin
+	select titles,logos,bannersAroundField,firstTeam,addsInClub,events,titles,printedMaterial,website,friendlyMatches_trainingCmps
+	from  Marketing_Rights M
+	where M.contractID = @contractID
+end
 
 
-*/
+go
+create proc Get_Penalties_Reference
+@contractID int
+as
+select penalty,ammount from Penalties_Reference where contractID= @contractID
+
+
+go 
+create proc Get_Penalties_ammounts_on_contract
+@contractID int
+as
+select penalty,ammount,dateofPenalty from Penalties_ammounts_on_contract where contractID=@contractID
+
+
+go 
+create proc Get_other_Payment
+@contractID int
+as
+select description, ammount from Other_Payment where contractID=@contractID
+
+
+go
+create proc Get_numberOfSeasons
+@contractID int,
+@num int out
+as 
+begin
+	set @num=0
+	select @num=@num+isnull(count(*),0) from Season1_payment where contractID=@contractID
+	select @num=@num+isnull(count(*),0) from Season2_Payment where contractID=@contractID
+	select @num=@num+isnull(count(*),0) from Season3_payment where contractID=@contractID
+	select @num=@num+isnull(count(*),0) from Season4_payment where contractID=@contractID
+end
+
+
+go
+create proc Get_Season1_Incentives
+@contractID int
+as
+begin
+	SELECT
+      firstPlace
+      ,secondPlace
+      ,thirdPlace
+      ,fourthPlace
+      ,fifthPlace
+      ,sixthPlace
+      ,seventhPlace
+      ,eighthPlace
+      ,ninthPlace
+      ,tenthPlace
+      ,eleventhPlace
+      ,twelvethPlace
+      ,thirteenthPlace
+      ,fourteenthPlace
+      ,fifteenthPlace
+      ,sixteenthPlace
+      ,seventeenthPlace
+      ,eighteenthPlace
+      ,nineteenthPlace
+      ,twentiethPlace
+ 	FROM Season1_Incentives where contractID=@contractID
+end
+
+go
+create proc Get_Season2_Incentives
+@contractID int
+as
+begin
+	SELECT
+      firstPlace
+      ,secondPlace
+      ,thirdPlace
+      ,fourthPlace
+      ,fifthPlace
+      ,sixthPlace
+      ,seventhPlace
+      ,eighthPlace
+      ,ninthPlace
+      ,tenthPlace
+      ,eleventhPlace
+      ,twelvethPlace
+      ,thirteenthPlace
+      ,fourteenthPlace
+      ,fifteenthPlace
+      ,sixteenthPlace
+      ,seventeenthPlace
+      ,eighteenthPlace
+      ,nineteenthPlace
+      ,twentiethPlace
+    FROM Season2_Incentives where contractID=@contractID
+end
+
+
+go
+create proc Get_Season3_Incentives
+@contractID int
+as
+begin
+	SELECT
+      firstPlace
+      ,secondPlace
+      ,thirdPlace
+      ,fourthPlace
+      ,fifthPlace
+      ,sixthPlace
+      ,seventhPlace
+      ,eighthPlace
+      ,ninthPlace
+      ,tenthPlace
+      ,eleventhPlace
+      ,twelvethPlace
+      ,thirteenthPlace
+      ,fourteenthPlace
+      ,fifteenthPlace
+      ,sixteenthPlace
+      ,seventeenthPlace
+      ,eighteenthPlace
+      ,nineteenthPlace
+      ,twentiethPlace
+    FROM Season3_Incentives where contractID=@contractID
+end
+
+
+go
+create proc Get_Season4_Incentives
+@contractID int
+as
+begin
+	SELECT
+      firstPlace
+      ,secondPlace
+      ,thirdPlace
+      ,fourthPlace
+      ,fifthPlace
+      ,sixthPlace
+      ,seventhPlace
+      ,eighthPlace
+      ,ninthPlace
+      ,tenthPlace
+      ,eleventhPlace
+      ,twelvethPlace
+      ,thirteenthPlace
+      ,fourteenthPlace
+      ,fifteenthPlace
+      ,sixteenthPlace
+      ,seventeenthPlace
+      ,eighteenthPlace
+      ,nineteenthPlace
+      ,twentiethPlace
+  	FROM Season4_Incentives where contractID=@contractID
+end
+
+
+go 
+create proc Get_Season1_Payment
+@contractID int
+as
+begin
+	SELECT 
+      total
+      ,tvRights
+      ,marketingRights
+      ,firstInstallment
+      ,firstInstallmentDate
+      ,firstInstallmentPaid
+      ,secondInstallment
+      ,secondInstallmentDate
+      ,secondInstallmentPaid
+      ,thirdInstallment
+      ,thirdInstallmentDate
+      ,thirdInstallmentPaid
+      ,fourthInstallment
+      ,fourthInstallmentDate
+      ,fourthInstallmentPaid
+ 	FROM Season1_Payment where contractID=@contractID
+end
+
+
+go 
+create proc Get_Season2_Payment
+@contractID int
+as
+begin
+	SELECT 
+      total
+      ,tvRights
+      ,marketingRights
+      ,firstInstallment
+      ,firstInstallmentDate
+      ,firstInstallmentPaid
+      ,secondInstallment
+      ,secondInstallmentDate
+      ,secondInstallmentPaid
+      ,thirdInstallment
+      ,thirdInstallmentDate
+      ,thirdInstallmentPaid
+      ,fourthInstallment
+      ,fourthInstallmentDate
+      ,fourthInstallmentPaid
+ 	FROM Season2_Payment where contractID=@contractID
+end
+
+
+go 
+create proc Get_Season3_Payment
+@contractID int
+as
+begin
+	SELECT 
+      total
+      ,tvRights
+      ,marketingRights
+      ,firstInstallment
+      ,firstInstallmentDate
+      ,firstInstallmentPaid
+      ,secondInstallment
+      ,secondInstallmentDate
+      ,secondInstallmentPaid
+      ,thirdInstallment
+      ,thirdInstallmentDate
+      ,thirdInstallmentPaid
+      ,fourthInstallment
+      ,fourthInstallmentDate
+      ,fourthInstallmentPaid
+ 	FROM Season3_Payment where contractID=@contractID
+end
+
+go 
+create proc Get_Season4_Payment
+@contractID int
+as
+begin
+	SELECT 
+      total
+      ,tvRights
+      ,marketingRights
+      ,firstInstallment
+      ,firstInstallmentDate
+      ,firstInstallmentPaid
+      ,secondInstallment
+      ,secondInstallmentDate
+      ,secondInstallmentPaid
+      ,thirdInstallment
+      ,thirdInstallmentDate
+      ,thirdInstallmentPaid
+      ,fourthInstallment
+      ,fourthInstallmentDate
+      ,fourthInstallmentPaid
+ 	FROM Season4_Payment where contractID=@contractID
+end
+
+
+go
+create proc Get_SUSmoney
+@contractID Int
+as
+SELECT susspendedAmmount,DateOfSuspention
+  FROM Money_Susspended_for_Settelment where contractID=@contractID
+
 /*--------------------------------------------Editing and deleting Procs--------------------------------------------*/
 
 go
-Create proc EditPaymentStatus
+create proc EditPaymentStatus
 @contractID int,
 @season int,
 @installment int,
@@ -411,213 +729,25 @@ Create proc EditPaymentStatus
 as
 begin
 	set @stat=1
-	declare @idStat int
-	if @season=1
-	begin
-		select @idStat=count(*) from Season1_payment where contractID=@contractID
-		if @idStat=1
-		begin
-			if @installment =1
-			begin
-				update Season1_payment
-				set firstInstallmentPaid = @paid
-				where contractID=@contractID
-			end
-			else
-			begin
-				if @installment =2
-				begin
-					update Season1_payment
-					set secondInstallmentPaid = @paid
-					where contractID=@contractID
-				end
-				else
-				begin
-					if @installment =3 
-					begin
-						update Season1_payment
-						set thirdInstallmentPaid = @paid
-						where contractID=@contractID
-					end
-					else
-					begin
-						if @installment =4
-						begin
-							update Season1_payment
-							set fourthInstallmentPaid = @paid
-							where contractID=@contractID
+	declare @seasontbl nvarchar(50)
+	declare @installmentfeild nvarchar(50)
+	declare @sql nvarchar(max)
+	set @seasontbl=case @season
+						when 1 then 'Season1_payment'
+						when 2 then 'Season2_payment'
+						when 3 then 'Season3_payment'
+						when 4 then 'Season4_payment'
 						end
-						else
-						begin
-							set @stat=0
-						end
-					end
-				end
-			end
-		end
-		else
-		begin
-			set @stat=0
-		end 
-	end
-	else
-	begin
-		if @season=2
-		begin
-			select @idStat=count(*) from Season1_payment where contractID=@contractID
-			if @idStat=1
-			begin
-				if @installment =1
-				begin
-					update Season2_payment
-					set firstInstallmentPaid = @paid
-					where contractID=@contractID
-				end
-				else
-				begin
-					if @installment =2
-					begin
-						update Season2_payment
-						set secondInstallmentPaid = @paid
-						where contractID=@contractID
-					end
-					else
-					begin
-						if @installment =3 
-						begin
-							update Season2_payment
-							set thirdInstallmentPaid =@paid
-							where contractID=@contractID
-						end
-						else
-						begin
-							if @installment =4
-							begin
-								update Season2_payment
-								set fourthInstallmentPaid =@paid
-								where contractID=@contractID
-							end
-							else
-							begin
-								set @stat=0
-							end
-						end
-					end
-				end		
-			end
-			else
-			begin
-				set @stat=0
-			end
-		end
-		else
-		begin
-			if @season=3
-			begin
-				select @idStat=count(*) from Season1_payment where contractID=@contractID
-				if @idStat=1
-				begin
-					if @installment =1
-					begin
-						update Season3_payment
-						set firstInstallmentPaid =@paid
-						where contractID=@contractID
-					end
-					else
-					begin
-						if @installment =2
-						begin
-							update Season3_payment
-							set secondInstallmentPaid =@paid
-							where contractID=@contractID
-						end
-						else
-						begin
-							if @installment =3 
-							begin
-								update Season3_payment
-								set thirdInstallmentPaid =@paid
-								where contractID=@contractID
-							end
-							else
-							begin
-								if @installment =4
-								begin
-									update Season3_payment
-									set fourthInstallmentPaid =@paid
-									where contractID=@contractID
+	set @installmentfeild = case @installment
+								when 1 then 'firstInstallmentPaid'
+								when 2 then 'secondInstallmentPaid'
+								when 3 then 'thirdInstallmentPaid'
+								when 4 then 'fourthInstallmentPaid'
 								end
-								else
-								begin
-									set @stat=0
-								end
-							end
-						end
-					end		
-	 			end
-				else
-				begin
-					set @stat=0
-				end
-			end
-			else
-			begin
-				if @season=4
-				begin
-					select @idStat=count(*) from Season1_payment where contractID=@contractID
-					if @idStat=1
-					begin
-						if @installment =1
-						begin
-							update Season4_payment
-							set firstInstallmentPaid =@paid
-							where contractID=@contractID
-						end
-						else
-						begin
-							if @installment =2
-							begin
-								update Season4_payment
-								set secondInstallmentPaid = @paid
-								where contractID=@contractID
-							end
-							else
-							begin
-								if @installment =3 
-								begin
-									update Season4_payment
-									set thirdInstallmentPaid = @paid
-									where contractID=@contractID
-								end
-								else
-								begin
-									if @installment =4
-									begin
-										update Season4_payment
-										set fourthInstallmentPaid =@paid
-										where contractID=@contractID
-									end
-									else
-									begin
-										set @stat=0
-									end
-								end
-							end
-						end		
-					end
-					else
-					begin
-						set @stat=0
-					end
-				end
-				else
-				begin
-					set @stat=0
-				end
-			end
-		end
-	end
+	set @sql = concat('update '+@seasontbl+' set '+@installmentfeild+' =',@paid ,' where contractID=',@contractID)
+	exec(@sql)						
 end
+
 /* -----------------------------------------Calculation Procs----------------------------------------- */
 
 go
@@ -634,7 +764,7 @@ begin
 	select @t3= total from Season3_payment where ContractID=@contId
 	declare @t4 int =0
 	select @t4= total from Season4_payment where ContractID=@contId
-	set @total=@t1+@t2+@t3+@t4
+	set @total=isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -652,7 +782,7 @@ begin
 	select @t3= marketingRights from Season3_payment where ContractID=@contId
 	declare @t4 int =0
 	select @t4= marketingRights from Season4_payment where ContractID=@contId
-	set @total=@t1+@t2+@t3+@t4
+	set @total=isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -670,7 +800,7 @@ begin
 	select @t3= tvRights from Season3_payment where ContractID=@contId
 	declare @t4 int =0
 	select @t4= tvRights from Season4_payment where ContractID=@contId
-	set @total=@t1+@t2+@t3+@t4
+	set @total=isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -687,7 +817,7 @@ begin
 	select @t3= sum(total) from Season3_payment 
 	declare @t4 int =0
 	select @t4= sum(total) from Season4_payment 
-	set @total=@t1+@t2+@t3+@t4
+	set @total=isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -704,7 +834,7 @@ begin
 	select @t3= sum(marketingRights) from Season3_payment 
 	declare @t4 int =0
 	select @t4= sum(marketingRights) from Season4_payment 
-	set @total=@t1+@t2+@t3+@t4
+	set @total=isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -721,7 +851,7 @@ begin
 	select @t3= sum(tvRights) from Season3_payment 
 	declare @t4 int =0
 	select @t4= sum(tvRights) from Season4_payment 
-	set @total=@t1+@t2+@t3+@t4
+	set @total=isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -739,7 +869,7 @@ begin
 	select @t3=thirdInstallment from Season1_Payment where thirdInstallmentPaid=1 and contractID=@id
 	declare @t4 int=0
 	select @t4=fourthInstallment from Season1_Payment where fourthInstallmentPaid=1 and contractID=@id
-	set @paid = @t1+@t2+@t3+@t4
+	set @paid = isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -757,7 +887,7 @@ begin
 	select @t3=thirdInstallment from Season1_Payment where thirdInstallmentPaid=0 and contractID=@id
 	declare @t4 int=0
 	select @t4=fourthInstallment from Season1_Payment where fourthInstallmentPaid=0 and contractID=@id
-	set @due = @t1+@t2+@t3+@t4
+	set @due = isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -775,7 +905,7 @@ begin
 	select @t3=thirdInstallment from Season2_Payment where thirdInstallmentPaid=1 and contractID=@id
 	declare @t4 int=0
 	select @t4=fourthInstallment from Season2_Payment where fourthInstallmentPaid=1 and contractID=@id
-	set @paid = @t1+@t2+@t3+@t4
+	set @paid = isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -793,7 +923,7 @@ begin
 	select @t3=thirdInstallment from Season2_Payment where thirdInstallmentPaid=0 and contractID=@id
 	declare @t4 int=0
 	select @t4=fourthInstallment from Season2_Payment where fourthInstallmentPaid=0 and contractID=@id
-	set @due = @t1+@t2+@t3+@t4
+	set @due = isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -811,7 +941,7 @@ begin
 	select @t3=thirdInstallment from Season3_Payment where thirdInstallmentPaid=1 and contractID=@id
 	declare @t4 int=0
 	select @t4=fourthInstallment from Season3_Payment where fourthInstallmentPaid=1 and contractID=@id
-	set @paid = @t1+@t2+@t3+@t4
+	set @paid = isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -829,7 +959,7 @@ begin
 	select @t3=thirdInstallment from Season3_Payment where thirdInstallmentPaid=0 and contractID=@id
 	declare @t4 int=0
 	select @t4=fourthInstallment from Season3_Payment where fourthInstallmentPaid=0 and contractID=@id
-	set @due = @t1+@t2+@t3+@t4
+	set @due = isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -847,7 +977,7 @@ begin
 	select @t3=thirdInstallment from Season4_Payment where thirdInstallmentPaid=1 and contractID=@id
 	declare @t4 int=0
 	select @t4=fourthInstallment from Season4_Payment where fourthInstallmentPaid=1 and contractID=@id
-	set @paid = @t1+@t2+@t3+@t4
+	set @paid =isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -865,7 +995,7 @@ begin
 	select @t3=thirdInstallment from Season4_Payment where thirdInstallmentPaid=0 and contractID=@id
 	declare @t4 int=0
 	select @t4=fourthInstallment from Season4_Payment where fourthInstallmentPaid=0 and contractID=@id
-	set @due = @t1+@t2+@t3+@t4
+	set @due = isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -883,7 +1013,7 @@ begin
 	exec CalDueSeason2 @id , @t2 out
 	exec CalDueSeason3 @id , @t3 out
 	exec CalDueSeason4 @id , @t4 out
-	set @tot=@t1+@t2+@t3+@t4
+	set @tot=isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -901,7 +1031,7 @@ begin
 	exec CalPaidSeason2 @id , @t2 out
 	exec CalPaidSeason3 @id , @t3 out
 	exec CalPaidSeason4 @id , @t4 out
-	set @tot=@t1+@t2+@t3+@t4
+	set @tot=isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -921,7 +1051,7 @@ begin
 		set @t1 = @t1+@t
 		set @c=@c+1
 	end
-	set @total=@t1
+	set @total=isnull(@t1,0)
 end
 
 
@@ -941,7 +1071,7 @@ begin
 		set @t1 = @t1+@t
 		set @c=@c+1
 	end
-	set @total=@t1
+	set @total=isnull(@t1,0)
 end
 
 
@@ -961,7 +1091,7 @@ begin
 		set @t1 = @t1+@t
 		set @c=@c+1
 	end
-	set @total=@t1
+	set @total=isnull(@t1,0)
 end
 
 
@@ -981,7 +1111,7 @@ begin
 		set @t1 = @t1+@t
 		set @c=@c+1
 	end
-	set @total=@t1
+	set @total=isnull(@t1,0)
 end
 
 
@@ -1001,7 +1131,7 @@ begin
 		set @t1 = @t1+@t
 		set @c=@c+1
 	end
-	set @total=@t1
+	set @total=isnull(@t1,0)
 end
 
 
@@ -1021,7 +1151,7 @@ begin
 		set @t1 = @t1+@t
 		set @c=@c+1
 	end
-	set @total=@t1
+	set @total=isnull(@t1,0)
 end
 
 
@@ -1041,7 +1171,7 @@ begin
 		set @t1 = @t1+@t
 		set @c=@c+1
 	end
-	set @total=@t1
+	set @total=isnull(@t1,0)
 end
 
 
@@ -1061,13 +1191,12 @@ begin
 		set @t1 = @t1+@t
 		set @c=@c+1
 	end
-	set @total=@t1
+	set @total=isnull(@t1,0)
 end
 
 
 go
 create proc TotalDue
-@id int,
 @tot int out
 as
 begin
@@ -1079,13 +1208,12 @@ begin
 	exec CalTotalDueSeason2 @t2 out
 	exec CalTotalDueSeason3 @t3 out
 	exec CalTotalDueSeason4 @t4 out
-	set @tot=@t1+@t2+@t3+@t4
+	set @tot=isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
 go
 create proc TotalPaid
-@id int,
 @tot int out
 as
 begin
@@ -1097,7 +1225,7 @@ begin
 	exec CalTotalPaidSeason2 @t2 out
 	exec CalTotalPaidSeason3 @t3 out
 	exec CalTotalPaidSeason4 @t4 out
-	set @tot=@t1+@t2+@t3+@t4
+	set @tot=isnull(@t1,0)+isnull(@t2,0)+isnull(@t3,0)+isnull(@t4,0)
 end
 
 
@@ -1112,7 +1240,7 @@ end
 
 
 GO
-alter proc CalIncentives
+create proc CalIncentives
 @contractID int,
 @season int,
 @points int,
@@ -1137,7 +1265,7 @@ begin
 	if @incentivetbl=1
 	begin
 		create table temp(val int)
-		declare @t varchar(max)
+		declare @t nvarchar(max)
 		set @t= case @place 
 					when 1  then 'firstPlace'
 	 				when 2  then 'secondPlace'
@@ -1187,8 +1315,73 @@ begin
 			end
 		end
 		exec(@t3)
-		set @o=@o+(select top 1 val from temp)
+		set @o=@o+isnull((select top 1 val from temp),0)
 		drop table temp
 	end
 	set @incentives=@o
 end
+
+
+go
+create proc CalTotalPenalies
+@contId int,
+@tot int out
+as
+select @tot=isnull(sum(ammount),0) from Penalties_ammounts_on_contract where contractID=@contId
+
+create proc TotalSeason
+@s int,
+@total int out
+as
+create table temptot(val int)
+declare @seasontbl nvarchar(max)
+declare @sql nvarchar(max)
+set @seasontbl=case @s
+						when 1 then 'Season1_payment'
+						when 2 then 'Season2_payment'
+						when 3 then 'Season3_payment'
+						when 4 then 'Season4_payment'
+						end
+set @sql='insert into temptot select isnull(sum(total),0) from '+@seasontbl
+exec( @sql)
+select @total=isnull((select top 1 val from temptot),0)
+drop table temptot
+print @total
+
+create proc TotalSeasontv
+@s int,
+@total int out
+as
+create table temptot(val int)
+declare @seasontbl nvarchar(max)
+declare @sql nvarchar(max)
+set @seasontbl=case @s
+						when 1 then 'Season1_payment'
+						when 2 then 'Season2_payment'
+						when 3 then 'Season3_payment'
+						when 4 then 'Season4_payment'
+						end
+set @sql='insert into temptot select isnull(sum(tvRights),0) from '+@seasontbl
+exec( @sql)
+select @total=isnull((select top 1 val from temptot),0)
+drop table temptot
+print @total
+
+create proc TotalSeasonMarketing
+@s int,
+@total int out
+as
+create table temptot(val int)
+declare @seasontbl nvarchar(max)
+declare @sql nvarchar(max)
+set @seasontbl=case @s
+						when 1 then 'Season1_payment'
+						when 2 then 'Season2_payment'
+						when 3 then 'Season3_payment'
+						when 4 then 'Season4_payment'
+						end
+set @sql='insert into temptot select isnull(sum(marketingRights),0) from '+@seasontbl
+exec( @sql)
+select @total=isnull((select top 1 val from temptot),0)
+drop table temptot
+print @total
