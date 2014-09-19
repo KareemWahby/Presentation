@@ -30,8 +30,7 @@ namespace Clubs_Database
             string s="";
             cmd.Parameters.Add(new SqlParameter("@username", _username));
 
-            SqlParameter name = cmd.Parameters.Add("@password", SqlDbType.VarChar, 50);
-            name.Value = _password;
+            cmd.Parameters.Add(new SqlParameter("@password", _password));
 
             // output parm
             SqlParameter success = cmd.Parameters.Add("@success", SqlDbType.Int);

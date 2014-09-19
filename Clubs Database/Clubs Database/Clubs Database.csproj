@@ -186,6 +186,7 @@
     <Content Include="packages.config" />
     <Content Include="SignIn.aspx" />
     <Content Include="finance.aspx" />
+    <Content Include="Club.aspx" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -280,6 +281,13 @@
     </Compile>
     <Compile Include="finance.aspx.designer.cs">
       <DependentUpon>finance.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Club.aspx.cs">
+      <DependentUpon>Club.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Club.aspx.designer.cs">
+      <DependentUpon>Club.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
